@@ -40,5 +40,7 @@
         recurse: yes
         owner: tomcat
         group: tomcat
-        state: directory    
-        
+        state: directory
+    - name: running shell
+      ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
+       
