@@ -43,4 +43,37 @@
         state: directory
     - name: running shell
       ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
-       
+    - name: copy tomcat service
+      ansible.builtin.copy:
+        src: tomcat.service
+        dest: /etc/systemd/system/tomcat.service
+        group: tomcat
+        owner: tomcat
+    - name: demon reload
+      ansible.builtin.systemd:
+        name: tomcat.service
+        daemon_reload: yes
+        enabled: true
+        state: "started"
+    - name: copy context xml
+      ansible.builtin.copy:
+        src: context.xml
+        dest: /opt/tomcat/latest/webapps/manager/META-INF/context.xml
+        group: tomcat
+        owner: tomcat
+    - name: copy host context xml
+      ansible.builtin.copy:
+        src: host-context.xml
+        dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
+        group: tomcat
+        owner: tomcat
+    - name: copy user xml
+      ansible.builtin.copy:
+        src: tomcat-users.xml
+        dest: /opt/tomcat/latest/conf/tomcat-users.xml
+        group: tomcat
+        owner: tomcat
+    - name: demon reload
+      ansible.builtin.systemd:
+        name: tomcat.service
+        state: "restarted"
