@@ -1,0 +1,43 @@
+---
+- name: jdk 11
+  hosts: all
+  become: yes
+  tasks:
+    - name: install jdk11
+      ansible.builtin.apt:
+        update_cache: true
+        name: openjdk-11-jdk
+        state: present
+    - name: create group
+      ansible.builtin.group:
+        name: tomcat
+        state: present
+    - name: create user
+      ansible.builtin.user:
+        create_home: yes
+        name: tomcat
+        group: tomcat
+        home: /opt/tomcat
+        shell: /bin/false
+        state: present
+    - name: wget
+      ansible.builtin.get_url:
+        url: https://www-eu.apache.org/dist/tomcat/tomcat-10/v10.1.8/bin/apache-tomcat-10.1.8.tar.gz
+        dest: /tmp/apache-tomcat-10.1.8.tar.gz
+    - name: untar the file
+      ansible.builtin.unarchive:
+        src: /tmp/apache-tomcat-10.1.8.tar.gz
+        dest: /opt/tomcat/
+    - name: link the file
+      ansible.builtin.file:
+        src: /opt/tomcat/apache-tomcat-10.1.8
+        dest: /opt/tomcat/latest
+        state: link
+    - name: permissions
+      ansible.builtin.file:
+        dest: /opt/tomcat/latest
+        recurse: yes
+        owner: tomcat
+        group: tomcat
+        state: directory    
+        
