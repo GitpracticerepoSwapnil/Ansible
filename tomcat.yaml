@@ -25,13 +25,9 @@
         home: /opt/tomcat
         shell: /bin/false
         state: present
-    - name: wget
-      ansible.builtin.get_url:
-        url: "https://www-eu.apache.org/dist/tomcat/tomcat-10/v{{ version }}/bin/apache-tomcat-{{ version }}.tar.gz"
-        dest: "/tmp/apache-tomcat-{{ version }}.tar.gz"
     - name: untar the file
       ansible.builtin.unarchive:
-        src: "/tmp/apache-tomcat-{{ version }}.tar.gz"
+        src: "https://www-eu.apache.org/dist/tomcat/tomcat-10/v{{ version }}/bin/apache-tomcat-{{ version }}.tar.gz"
         dest: /opt/tomcat/
         remote_src: yes
     - name: link the file
