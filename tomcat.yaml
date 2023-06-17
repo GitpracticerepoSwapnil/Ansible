@@ -21,9 +21,9 @@
     - name: create user
       ansible.builtin.user:
         create_home: yes
-        name: tomcat
-        group: tomcat
-        home: {{ User_home }}
+        name: "{{ user_name }}"
+        group: "{{ group_name }}"
+        home: "{{ User_home }}"
         shell: /bin/false
         state: present
     - name: untar the file
