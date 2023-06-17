@@ -7,7 +7,7 @@
     version: "10.1.8"
     user_name: tomcat
     group_name: tomcat
-    home: "/opt/tomcat/"
+    User_home: "/opt/tomcat/"
   tasks:
     - name: install jdk11
       ansible.builtin.apt:
@@ -23,28 +23,28 @@
         create_home: yes
         name: tomcat
         group: tomcat
-        home: "{{ home }}"
+        home: "{{ User_home }}"
         shell: /bin/false
         state: present
     - name: untar the file
       ansible.builtin.unarchive:
         src: "https://www-eu.apache.org/dist/tomcat/tomcat-10/v{{ version }}/bin/apache-tomcat-{{ version }}.tar.gz"
-        dest: "{{ home }}"
+        dest: "{{ User_home }}"
         remote_src: yes
     - name: link the file
       ansible.builtin.file:
-        src: "{{ home }}/apache-tomcat-{{ version }}"
-        dest: "{{ home }}/latest"
+        src: "{{ User_home }}/apache-tomcat-{{ version }}"
+        dest: "{{ User_home }}/latest"
         state: link
     - name: permissions
       ansible.builtin.file:
-        dest: "{{ home }}/latest"
+        dest: "{{ User_home }}/latest"
         recurse: yes
         owner: "{{user_name}}"
         group: "{{group_name}}"
         state: directory
     - name: running shell
-      ansible.builtin.command: sudo sh -c 'chmod +x {{ home }}/latest/bin/*.sh'
+      ansible.builtin.command: "sudo sh -c 'chmod +x {{ User_home }}/latest/bin/*.sh'"
     - name: copy tomcat service
       ansible.builtin.copy:
         src: tomcat.service
@@ -60,19 +60,19 @@
     - name: copy context xml
       ansible.builtin.copy:
         src: context.xml
-        dest: "{{ home }}/latest/webapps/manager/META-INF/context.xml"
+        dest: "{{ User_home }}/latest/webapps/manager/META-INF/context.xml"
         group: "{{group_name}}"
         owner: "{{user_name}}"
     - name: copy host context xml
       ansible.builtin.copy:
         src: host-context.xml
-        dest: "{{ home }}/latest/webapps/host-manager/META-INF/context.xml"
+        dest: "{{ User_home }}/latest/webapps/host-manager/META-INF/context.xml"
         group: "{{group_name}}"
         owner: "{{user_name}}"
     - name: copy user xml
       ansible.builtin.copy:
         src: tomcat-users.xml
-        dest: "{{ home }}/latest/conf/tomcat-users.xml"
+        dest: "{{ User_home }}/latest/conf/tomcat-users.xml"
         group: "{{group_name}}"
         owner: "{{user_name}}"
     - name: demon reload
