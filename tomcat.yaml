@@ -11,7 +11,7 @@
     - name: install jdk11
       ansible.builtin.apt:
         update_cache: true
-        name: {{ java_package}}
+        name: "{{ java_package}}"
         state: present
     - name: create group
       ansible.builtin.group:
@@ -28,23 +28,23 @@
     - name: wget
       ansible.builtin.get_url:
         url: "https://www-eu.apache.org/dist/tomcat/tomcat-10/v{{ version }}/bin/apache-tomcat-{{ version }}.tar.gz"
-        dest: /tmp/apache-tomcat-{{ version }}.tar.gz
+        dest: "/tmp/apache-tomcat-{{ version }}.tar.gz"
     - name: untar the file
       ansible.builtin.unarchive:
-        src: /tmp/apache-tomcat-{{ version }}.tar.gz
+        src: "/tmp/apache-tomcat-{{ version }}.tar.gz"
         dest: /opt/tomcat/
         remote_src: yes
     - name: link the file
       ansible.builtin.file:
-        src: /opt/tomcat/apache-tomcat-{{ version }}
+        src: "/opt/tomcat/apache-tomcat-{{ version }}"
         dest: /opt/tomcat/latest
         state: link
     - name: permissions
       ansible.builtin.file:
         dest: /opt/tomcat/latest
         recurse: yes
-        owner: {{user_name}}
-        group: {{group_name}}
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
         state: directory
     - name: running shell
       ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
@@ -52,8 +52,8 @@
       ansible.builtin.copy:
         src: tomcat.service
         dest: /etc/systemd/system/tomcat.service
-        group: {{group_name}}
-        owner: {{user_name}}
+        group: "{{group_name}}"
+        owner: "{{user_name}}"
     - name: demon reload
       ansible.builtin.systemd:
         name: tomcat.service
@@ -64,20 +64,20 @@
       ansible.builtin.copy:
         src: context.xml
         dest: /opt/tomcat/latest/webapps/manager/META-INF/context.xml
-        group: {{group_name}}
-        owner: {{user_name}}
+        group: "{{group_name}}"
+        owner: "{{user_name}}"
     - name: copy host context xml
       ansible.builtin.copy:
         src: host-context.xml
         dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
-        group: {{group_name}}
-        owner: {{user_name}}
+        group: "{{group_name}}"
+        owner: "{{user_name}}"
     - name: copy user xml
       ansible.builtin.copy:
         src: tomcat-users.xml
         dest: /opt/tomcat/latest/conf/tomcat-users.xml
-        group: {{group_name}}
-        owner: {{user_name}}
+        group: "{{group_name}}"
+        owner: "{{user_name}}"
     - name: demon reload
       ansible.builtin.systemd:
         name: tomcat.service
