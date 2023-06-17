@@ -23,7 +23,7 @@
         create_home: yes
         name: tomcat
         group: tomcat
-        home: "{{ User_home }}"
+        home: {{ User_home }}
         shell: /bin/false
         state: present
     - name: untar the file
