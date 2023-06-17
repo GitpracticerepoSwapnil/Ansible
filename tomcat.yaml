@@ -12,11 +12,11 @@
     - name: install jdk11
       ansible.builtin.apt:
         update_cache: true
-        name: "{{ java_package}}"
+        name: "{{ java_package }}"
         state: present
     - name: create group
       ansible.builtin.group:
-        name: tomcat
+        name: "{{group_name}}"
         state: present
     - name: create user
       ansible.builtin.user:
@@ -38,7 +38,7 @@
         state: link
     - name: permissions
       ansible.builtin.file:
-        dest: "{{ User_home }}/latest"
+        dest: "{{ User_home }}"
         recurse: yes
         owner: "{{user_name}}"
         group: "{{group_name}}"
