@@ -7,7 +7,7 @@
     version: "10.1.8"
     user_name: tomcat
     group_name: tomcat
-    User_home: "/opt/tomcat/"
+    User_home: /opt/tomcat/
   tasks:
     - name: install jdk11
       ansible.builtin.apt:
