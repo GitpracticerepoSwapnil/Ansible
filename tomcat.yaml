@@ -1,16 +1,7 @@
 ---
 - name: jdk 11
-  hosts: all
+  hosts: appservers
   become: yes
-  vars:
-    java_package: openjdk-11-jdk
-    version: "10.1.8"
-    major_version: "10"
-    user_name: tomcat
-    group_name: tomcat
-    user_shell: /bin/false
-    User_home: /opt/tomcat
-    tomcat_service: tomcat.service
   tasks:
     - name: install jdk11
       ansible.builtin.apt:
