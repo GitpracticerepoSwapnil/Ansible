@@ -50,8 +50,8 @@
       ansible.builtin.command: "sudo sh -c 'chmod +x {{ User_home }}/latest/bin/*.sh'"
     - name: copy tomcat service
       ansible.builtin.copy:
-        src: {{ tomcat_service }}
-        dest: /etc/systemd/system/{{ tomcat_service }}
+        src: "{{ tomcat_service }}"
+        dest: "/etc/systemd/system/{{ tomcat_service }}"
         group: "{{group_name}}"
         owner: "{{user_name}}"
     - name: demon reload
