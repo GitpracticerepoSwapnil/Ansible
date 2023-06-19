@@ -44,6 +44,7 @@
         state: directory
     - name: running shell
       ansible.builtin.command: "sudo sh -c 'chmod +x {{ User_home }}/latest/bin/*.sh'"
+      when: not tomcat_startup.stat.exists
     - name: copy tomcat service
       ansible.builtin.copy:
         src: "{{ tomcat_service }}"
