@@ -47,10 +47,18 @@
       when: not tomcat_startup.stat.exists
     - name: copy tomcat service
       ansible.builtin.copy:
-        src: "{{ tomcat_service }}"
+        src: tomcat.service
         dest: "/etc/systemd/system/{{ tomcat_service }}"
         group: "{{group_name}}"
         owner: "{{user_name}}"
+      when: ansible_facts['distribution'] == "Ubuntu"
+    - name: copy tomcat service
+      ansible.builtin.copy:
+        src: centos_tomcat.service
+        dest: "/etc/systemd/system/{{ tomcat_service }}"
+        group: "{{group_name}}"
+        owner: "{{user_name}}"
+      when: ansible_facts['distribution'] == "CentOS"
     - name: demon reload
       ansible.builtin.systemd:
         name: "{{ tomcat_service }}"
