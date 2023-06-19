@@ -5,9 +5,12 @@
   vars:
     java_package: openjdk-11-jdk
     version: "10.1.8"
+    major_version: "10"
     user_name: tomcat
     group_name: tomcat
+    user_shell: /bin/false
     User_home: /opt/tomcat
+    tomcat_service: tomcat.service
   tasks:
     - name: install jdk11
       ansible.builtin.apt:
@@ -24,11 +27,11 @@
         group: "{{ group_name }}"
         create_home: yes
         home: "{{ User_home }}"
-        shell: /bin/false
+        shell: {{user_shell}}
         state: present
     - name: untar the file
       ansible.builtin.unarchive:
-        src: "https://www-eu.apache.org/dist/tomcat/tomcat-10/v{{ version }}/bin/apache-tomcat-{{ version }}.tar.gz"
+        src: "https://www-eu.apache.org/dist/tomcat/tomcat-{{ major_version }}/v{{ version }}/bin/apache-tomcat-{{ version }}.tar.gz"
         dest: "{{ User_home }}"
         remote_src: yes
     - name: link the file
@@ -47,13 +50,13 @@
       ansible.builtin.command: "sudo sh -c 'chmod +x {{ User_home }}/latest/bin/*.sh'"
     - name: copy tomcat service
       ansible.builtin.copy:
-        src: tomcat.service
-        dest: /etc/systemd/system/tomcat.service
+        src: {{ tomcat_service }}
+        dest: /etc/systemd/system/{{ tomcat_service }}
         group: "{{group_name}}"
         owner: "{{user_name}}"
     - name: demon reload
       ansible.builtin.systemd:
-        name: tomcat.service
+        name: {{ tomcat_service }}
         daemon_reload: yes
         enabled: true
         state: "started"
@@ -77,5 +80,5 @@
         owner: "{{user_name}}"
     - name: demon reload
       ansible.builtin.systemd:
-        name: tomcat.service
+        name: {{ tomcat_service }}
         state: "restarted"
