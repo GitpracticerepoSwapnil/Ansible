@@ -83,7 +83,9 @@
         dest: "{{ User_home }}/latest/conf/tomcat-users.xml"
         group: "{{group_name}}"
         owner: "{{user_name}}"
-    - name: demon reload
+    - name: reload daemon and start tomcat
       ansible.builtin.systemd:
-        name: "{{ tomcat_service }}"
-        state: "restarted"
+        name: "{{ tomcat_service_name }}"
+        daemon_reload: yes
+        enabled: yes
+        state: started
