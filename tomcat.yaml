@@ -27,7 +27,7 @@
         group: "{{ group_name }}"
         create_home: yes
         home: "{{ User_home }}"
-        shell: {{user_shell}}
+        shell: "{{user_shell}}"
         state: present
     - name: untar the file
       ansible.builtin.unarchive:
@@ -56,7 +56,7 @@
         owner: "{{user_name}}"
     - name: demon reload
       ansible.builtin.systemd:
-        name: {{ tomcat_service }}
+        name: "{{ tomcat_service }}"
         daemon_reload: yes
         enabled: true
         state: "started"
@@ -80,5 +80,5 @@
         owner: "{{user_name}}"
     - name: demon reload
       ansible.builtin.systemd:
-        name: {{ tomcat_service }}
+        name: "{{ tomcat_service }}"
         state: "restarted"
